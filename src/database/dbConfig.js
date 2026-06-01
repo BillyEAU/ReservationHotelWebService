@@ -1,4 +1,6 @@
-import { PrismaClient } from "@prisma/client";
+// import pkg from '@prisma/client';
+// const { PrismaClient } = pkg;
+import { PrismaClient } from "../../prisma/generated/client/index.js";
 import { PrismaMariaDb } from "@prisma/adapter-mariadb";
 
 // Ambil koneksi string dari env
