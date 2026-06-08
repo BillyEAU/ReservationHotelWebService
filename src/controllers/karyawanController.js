@@ -11,7 +11,7 @@ const getAll = async (req, res, next) => {
 
     return res.status(200).json({
       status: true,
-      message: "berhasil",
+      message: "Data Berhasil Ditemukan",
       data: karyawan.map((item) => ({
         id_karyawan: item.id_karyawan,
         nama_karyawan: item.nama_karyawan,
@@ -40,7 +40,7 @@ const getById = async (req, res, next) => {
 
     return res.status(200).json({
       status: true,
-      message: "berhasil",
+      message: "Data Berhasil Ditemukan",
       data: {
         id_karyawan: karyawan.id_karyawan,
         nama_karyawan: karyawan.nama_karyawan,
@@ -74,7 +74,7 @@ const create = async (req, res, next) => {
 
     return res.status(201).json({
       status: true,
-      message: "berhasil",
+      message: "Data Berhasil Ditemukan",
       data: {
         id_karyawan: newKaryawan.id_karyawan,
         nama_karyawan: newKaryawan.nama_karyawan,
@@ -118,7 +118,7 @@ const update = async (req, res, next) => {
 
     return res.status(200).json({
       status: true,
-      message: "berhasil",
+      message: "Data Berhasil Ditemukan",
       data: {
         id_karyawan: updatedKaryawan.id_karyawan,
         nama_karyawan: updatedKaryawan.nama_karyawan,
@@ -149,7 +149,7 @@ const destroy = async (req, res, next) => {
 
     return res.status(200).json({
       status: true,
-      message: "berhasil dihapus",
+      message: "Data Karyawan Berhasil Dihapus",
       data: {
         id_karyawan: karyawan.id_karyawan,
         nama_karyawan: karyawan.nama_karyawan,
