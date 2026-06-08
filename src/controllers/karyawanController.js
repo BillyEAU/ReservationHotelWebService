@@ -2,162 +2,157 @@ import karyawanModel from "../models/karyawanModel.js";
 import validator from "../validators/validator.js";
 import { karyawanValidationSchema } from "../validators/karyawanValidator.js";
 
-const getAll = async (req, res, next) => {
+import karyawanModel from "../models/karyawanModel.js";
+import validator from "../validators/validator.js";
+import { karyawanValidationSchema } from "../validators/karyawanValidator.js";
+
+const getAll = async (req, res) => {
   try {
     const karyawan = await karyawanModel.getAll();
 
-    if (!karyawan)
-      return res.status(404).json({ error: "Data tidak ditemukan" });
+    if (!karyawan || karyawan.length === 0) {
+      return res.status(404).json({
+        status: false,
+        message: "Data tidak ditemukan",
+      });
+    }
 
     return res.status(200).json({
       status: true,
-      message: "berhasil",
-      data: karyawan.map((item) => ({
-        id_karyawan: item.id_karyawan,
-        nama_karyawan: item.nama_karyawan,
-        username: item.username,
-        email: item.email,
-        no_hp_karyawan: item.no_hp_karyawan,
-        role: item.role,
-      })),
+      message: "Berhasil",
+      data: karyawan,
     });
   } catch (error) {
-    return res.status(500).json({ error: error });
+    return res.status(500).json({
+      status: false,
+      error: error.message,
+    });
   }
 };
 
-const getById = async (req, res, next) => {
+const getById = async (req, res) => {
   try {
     const { id } = req.params;
 
-    if (!id)
-      return res.status(400).json({ error: "ID Karyawan dibutuhkan" });
-
     const karyawan = await karyawanModel.getById(id);
 
-    if (!karyawan)
-      return res.status(404).json({ error: "Data tidak ditemukan" });
+    if (!karyawan) {
+      return res.status(404).json({
+        status: false,
+        message: "Data tidak ditemukan",
+      });
+    }
 
     return res.status(200).json({
       status: true,
-      message: "berhasil",
-      data: {
-        id_karyawan: karyawan.id_karyawan,
-        nama_karyawan: karyawan.nama_karyawan,
-        username: karyawan.username,
-        email: karyawan.email,
-        no_hp_karyawan: karyawan.no_hp_karyawan,
-        role: karyawan.role,
-      },
+      message: "Berhasil",
+      data: karyawan,
     });
   } catch (error) {
-    return res.status(500).json({ error: error });
+    return res.status(500).json({
+      status: false,
+      error: error.message,
+    });
   }
 };
 
-const create = async (req, res, next) => {
+const create = async (req, res) => {
   try {
     const { body } = req;
-
-    if (!body)
-      return res.status(400).json({ error: "Data tidak lengkap" });
 
     const { error, value } = validator(
       karyawanValidationSchema,
       body
     );
 
-    if (error)
-      return res.status(400).json({ error: error });
+    if (error) {
+      return res.status(400).json({
+        status: false,
+        error,
+      });
+    }
 
     const newKaryawan = await karyawanModel.create(value);
 
     return res.status(201).json({
       status: true,
-      message: "berhasil",
-      data: {
-        id_karyawan: newKaryawan.id_karyawan,
-        nama_karyawan: newKaryawan.nama_karyawan,
-        username: newKaryawan.username,
-        email: newKaryawan.email,
-        no_hp_karyawan: newKaryawan.no_hp_karyawan,
-        role: newKaryawan.role,
-      },
+      message: "Karyawan berhasil ditambahkan",
+      data: newKaryawan,
     });
   } catch (error) {
-    return res.status(500).json({ error: error });
+    return res.status(500).json({
+      status: false,
+      error: error.message,
+    });
   }
 };
 
-const update = async (req, res, next) => {
+const update = async (req, res) => {
   try {
     const { id } = req.params;
-
-    if (!id)
-      return res.status(400).json({ error: "ID Karyawan dibutuhkan" });
-
     const { body } = req;
-
-    if (!body)
-      return res.status(400).json({ error: "Data tidak lengkap" });
 
     const karyawan = await karyawanModel.getById(id);
 
-    if (!karyawan)
-      return res.status(404).json({ error: "Data tidak ditemukan" });
+    if (!karyawan) {
+      return res.status(404).json({
+        status: false,
+        message: "Data tidak ditemukan",
+      });
+    }
 
     const { error, value } = validator(
       karyawanValidationSchema,
       body
     );
 
-    if (error)
-      return res.status(400).json({ error: error });
+    if (error) {
+      return res.status(400).json({
+        status: false,
+        error,
+      });
+    }
 
-    const updatedKaryawan = await karyawanModel.update(value, id);
+    const updatedKaryawan = await karyawanModel.update(id, value);
 
     return res.status(200).json({
       status: true,
-      message: "berhasil",
-      data: {
-        id_karyawan: updatedKaryawan.id_karyawan,
-        nama_karyawan: updatedKaryawan.nama_karyawan,
-        username: updatedKaryawan.username,
-        email: updatedKaryawan.email,
-        no_hp_karyawan: updatedKaryawan.no_hp_karyawan,
-        role: updatedKaryawan.role,
-      },
+      message: "Data berhasil diupdate",
+      data: updatedKaryawan,
     });
   } catch (error) {
-    return res.status(500).json({ error: error });
+    return res.status(500).json({
+      status: false,
+      error: error.message,
+    });
   }
 };
 
-const destroy = async (req, res, next) => {
+const destroy = async (req, res) => {
   try {
     const { id } = req.params;
 
-    if (!id)
-      return res.status(400).json({ error: "ID Karyawan dibutuhkan" });
-
     const karyawan = await karyawanModel.getById(id);
 
-    if (!karyawan)
-      return res.status(404).json({ error: "Data tidak ditemukan" });
+    if (!karyawan) {
+      return res.status(404).json({
+        status: false,
+        message: "Data tidak ditemukan",
+      });
+    }
 
     await karyawanModel.delete(id);
 
     return res.status(200).json({
       status: true,
-      message: "berhasil dihapus",
-      data: {
-        id_karyawan: karyawan.id_karyawan,
-        nama_karyawan: karyawan.nama_karyawan,
-        username: karyawan.username,
-      },
+      message: "Data berhasil dihapus",
+      data: karyawan,
     });
   } catch (error) {
-    return res.status(500).json({ error: error });
+    return res.status(500).json({
+      status: false,
+      error: error.message,
+    });
   }
 };
 
