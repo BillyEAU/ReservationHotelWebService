@@ -1,6 +1,6 @@
-import tamuModel from "../models/tamuModel.js";
-import validator from "../validators/validator.js";
-import { tamuValidationSchema } from "../validators/tamuValidator.js";
+import tamuModel from "../src/models/tamuModel.js";
+import validator from "../src/validators/validator.js";
+import { tamuValidationSchema } from "../src/validators/tamuValidator.js";
 
 const getAll = async (req, res, next) => {
   try {

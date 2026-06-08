@@ -3,7 +3,7 @@ const router = express.Router();
 
 // Import Controllers (Logika bisnis backend kamu)
 const authController = require('../controllers/authController');
-const tamuController = require('../controllers/tamuController');
+const tamuController = require('../src/controllers/tamuController');
 const kamarController = require('../controllers/kamarController');
 const reservasiController = require('../controllers/reservasiController');
 
