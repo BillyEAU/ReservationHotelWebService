@@ -17,7 +17,7 @@ app.use(express.urlencoded({ extended: true }));
 
 // Rute dasar untuk mengecek server menyala
 app.get('/', (req, res) => {
-    res.json({ message: "Server Web Service Hotel Berjalan Lancar!" });
+    res.json({ message: "Rodok danga!" });
 });
 
 // Menjalankan server
