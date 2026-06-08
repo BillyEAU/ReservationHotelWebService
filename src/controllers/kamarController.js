@@ -51,6 +51,29 @@ const getById = async (req, res, next) => {
   }
 };
 
+const getByKamarStatus = async (req, res, next) => {
+        try {
+            const { status } = req.params;
+
+            const kamar = await prismaClient.kamar.findMany({
+                where: {
+                    status: status
+                }
+            });
+
+            res.status(200).json({
+                success: true,
+                data: kamar
+            });
+
+        } catch (error) {
+            res.status(500).json({
+                success: false,
+                message: error.message
+            });
+        }
+};
+
 const create = async (req, res, next) => {
   try {
     const { body } = req;
@@ -155,6 +178,7 @@ const destroy = async (req, res, next) => {
 export default {
   getAll,
   getById,
+  getByKamarStatus,
   create,
   update,
   destroy,

@@ -1,8 +1,8 @@
-import { PrismaClient } from "../database/dbConfig.js";
+import prismaClient from "../database/dbConfig.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 
-const prisma = new PrismaClient();
+const prisma = prismaClient;
 const authController = {
     async login(req, res) {
         const { email, password } = req.body;

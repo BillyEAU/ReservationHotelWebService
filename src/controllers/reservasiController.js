@@ -149,6 +149,33 @@ const update = async (req, res, next) => {
   }
 };
 
+const updateStatusReservasi = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { status } = req.body;
+
+    const reservasi = await prismaClient.reservasi.update({
+      where: {
+        id: Number(id)
+      },
+      data: {
+        status
+      }
+    });
+
+    res.status(200).json({
+      success: true,
+      data: reservasi
+    });
+
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message
+    });
+  }
+};
+
 const destroy = async (req, res, next) => {
   try {
     const { id } = req.params;
@@ -182,5 +209,6 @@ export default {
   getById,
   create,
   update,
+  updateStatusReservasi,
   destroy,
 };

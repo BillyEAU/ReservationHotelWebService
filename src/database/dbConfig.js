@@ -45,3 +45,5 @@ prismaClient.$on("info", (e) => {
 prismaClient.$on("query", (e) => {
   console.info(e);
 });
+
+export default prismaClient;
