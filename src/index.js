@@ -7,7 +7,8 @@ dotenv.config();
 const app = express();
 const port = process.env.PORT || 3000;
 
-// Middleware agar Express bisa membaca input berupa JSON dari Postman/Frontend
+// Middleware agar Express bisa membaca input berupa JSON dari Postman/Frontend 
+//jemmbut kecelup santen
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
