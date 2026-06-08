@@ -21,15 +21,11 @@
   },
   "dependencies": {
     "@prisma/client": "^7.8.0",
-<<<<<<< HEAD
     "bcrypt": "^6.0.0",
     "dotenv": "^17.4.2",
     "express": "^5.2.1",
     "jsonwebtoken": "^9.0.3",
     "mariadb": "^3.5.2"
-=======
-    "express": "^5.2.1"
->>>>>>> 76355d086b4d1eec8f7ff7861e5f3f3aaefb4cc2
   },
   "devDependencies": {
     "@types/node": "^25.9.1",
