@@ -8,7 +8,7 @@ const app = express();
 const port = process.env.PORT || 3000;
 
 // Middleware agar Express bisa membaca input berupa JSON dari Postman/Frontend 
-//jemmbut kecelup santen
+//wok wowok ini gua bingung wok
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
