@@ -2,7 +2,6 @@ import express from 'express';
 import dotenv from 'dotenv';
 // import apiRoutes from './routes/api.js'; // Pastikan Anda mengimpor file routes Anda
 
-// Memuat variabel dari file .env
 dotenv.config();
 
 const app = express();
