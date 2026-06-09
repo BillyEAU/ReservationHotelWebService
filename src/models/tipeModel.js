@@ -3,14 +3,14 @@ import { prismaClient } from "../database/dbConfig.js";
 const tipeModel = {
   
   async getAll() {
-    return await prismaClient.tipeKamar.findMany({
+    return await prismaClient.tipe_kamar.findMany({
       orderBy: { id_tipe_kamar: "asc" },
     });
   },
 
   
   async getById(id_tipe_kamar) {
-    return await prismaClient.tipeKamar.findUnique({
+    return await prismaClient.tipe_kamar.findUnique({
       where: { id_tipe_kamar: Number(id_tipe_kamar) },
       include: { kamar: true },
     });
@@ -18,7 +18,7 @@ const tipeModel = {
 
   
   async create({ nama_tipe, harga, fasilitas }) {
-    return await prismaClient.tipeKamar.create({
+    return await prismaClient.tipe_kamar.create({
       data: {
         nama_tipe,
         harga,
@@ -29,7 +29,7 @@ const tipeModel = {
 
   
   async update(id_tipe_kamar, { nama_tipe, harga, fasilitas }) {
-    return await prismaClient.tipeKamar.update({
+    return await prismaClient.tipe_kamar.update({
       where: { id_tipe_kamar: Number(id_tipe_kamar) },
       data: {
         nama_tipe,
@@ -41,7 +41,7 @@ const tipeModel = {
 
   
   async delete(id_tipe_kamar) {
-    return await prismaClient.tipeKamar.delete({
+    return await prismaClient.tipe_kamar.delete({
       where: { id_tipe_kamar: Number(id_tipe_kamar) },
     });
   },

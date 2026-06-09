@@ -108,7 +108,7 @@ const update = async (req, res, next) => {
     if (error)
       return res.status(400).json({ error: error });
 
-    const updatedTamu = await tamuModel.update(value, id);
+    const updatedTamu = await tamuModel.update(id, value);
 
     return res.status(200).json({
       status: true,

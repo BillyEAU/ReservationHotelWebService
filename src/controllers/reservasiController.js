@@ -4,7 +4,7 @@ import { reservasiValidationSchema } from "../validators/reservasiValidator.js";
 
 const getAll = async (req, res, next) => {
   try {
-    const reservasi = await reservasiModel.getAll();
+    const reservasi = await reservationModel.getAll();
 
     if (!reservasi)
       return res.status(404).json({ error: "Data tidak ditemukan" });
@@ -37,7 +37,7 @@ const getById = async (req, res, next) => {
     if (!id)
       return res.status(400).json({ error: "ID Reservasi dibutuhkan" });
 
-    const reservasi = await reservasiModel.getById(id);
+    const reservasi = await reservationModel.getById(id);
 
     if (!reservasi)
       return res.status(404).json({ error: "Data tidak ditemukan" });
@@ -78,7 +78,7 @@ const create = async (req, res, next) => {
     if (error)
       return res.status(400).json({ error: error });
 
-    const newReservasi = await reservasiModel.create(value);
+    const newReservasi = await reservationModel.create(value);
 
     return res.status(201).json({
       status: true,
@@ -113,7 +113,7 @@ const update = async (req, res, next) => {
     if (!body)
       return res.status(400).json({ error: "Data tidak lengkap" });
 
-    const reservasi = await reservasiModel.getById(id);
+    const reservasi = await reservationModel.getById(id);
 
     if (!reservasi)
       return res.status(404).json({ error: "Data tidak ditemukan" });
@@ -126,7 +126,7 @@ const update = async (req, res, next) => {
     if (error)
       return res.status(400).json({ error: error });
 
-    const updatedReservasi = await reservasiModel.update(value, id);
+    const updatedReservasi = await reservationModel.update(id, value);
 
     return res.status(200).json({
       status: true,
@@ -183,12 +183,12 @@ const destroy = async (req, res, next) => {
     if (!id)
       return res.status(400).json({ error: "ID Reservasi dibutuhkan" });
 
-    const reservasi = await reservasiModel.getById(id);
+    const reservasi = await reservationModel.getById(id);
 
     if (!reservasi)
       return res.status(404).json({ error: "Data tidak ditemukan" });
 
-    await reservasiModel.delete(id);
+    await reservationModel.delete(id);
 
     return res.status(200).json({
       status: true,

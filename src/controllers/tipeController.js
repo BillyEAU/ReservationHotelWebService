@@ -20,7 +20,11 @@ const getAll = async (req, res, next) => {
       })),
     });
   } catch (error) {
-    return res.status(500).json({ error: error });
+    console.error(error);
+
+    return res.status(500).json({
+      error: error.message
+    });
   }
 };
 
@@ -59,7 +63,7 @@ const create = async (req, res, next) => {
       return res.status(400).json({ error: "Data tidak lengkap" });
 
     const { error, value } = validator(
-      tipeValidationSchema,
+      tipeKamarValidationSchema,
       body
     );
 
@@ -79,7 +83,11 @@ const create = async (req, res, next) => {
       },
     });
   } catch (error) {
-    return res.status(500).json({ error: error });
+    console.error(error);
+
+    return res.status(500).json({
+      error: error.message
+    });
   }
 };
 
@@ -101,14 +109,14 @@ const update = async (req, res, next) => {
       return res.status(404).json({ error: "Data tidak ditemukan" });
 
     const { error, value } = validator(
-      tipeValidationSchema,
+      tipeKamarValidationSchema,
       body
     );
 
     if (error)
       return res.status(400).json({ error: error });
 
-    const updatedTipeKamar = await tipeModel.update(value, id);
+    const updatedTipeKamar = await tipeModel.update(id, value);
 
     return res.status(200).json({
       status: true,
