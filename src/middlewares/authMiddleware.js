@@ -14,7 +14,7 @@ export const verifyToken = (req, res, next) => {
     });
   }
 
-  try {
+  try { 
     // Verifikasi token menggunakan Secret Key (disarankan disimpan di file .env)
     const secretKey = process.env.JWT_SECRET || 'RAHASIA_SUPER_AWESOME_KAMU';
     const decoded = jwt.verify(token, secretKey);
