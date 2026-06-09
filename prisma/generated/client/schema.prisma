@@ -1,0 +1,93 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "./generated/client"
+}
+
+datasource db {
+  provider = "mysql"
+}
+
+model kamar {
+  id_kamar      Int           @id @default(autoincrement())
+  id_tipe_kamar Int
+  nomor_kamar   String        @db.VarChar(10)
+  status        kamar_status? @default(Tersedia)
+  tipe_kamar    tipe_kamar    @relation(fields: [id_tipe_kamar], references: [id_tipe_kamar], onDelete: NoAction, onUpdate: NoAction, map: "kamar_ibfk_1")
+  reservasi     reservasi[]
+
+  @@index([id_tipe_kamar], map: "id_tipe_kamar")
+}
+
+model karyawan {
+  id_karyawan    Int            @id @default(autoincrement())
+  nama_karyawan  String         @db.VarChar(100)
+  username       String         @unique(map: "username") @db.VarChar(50)
+  email          String         @db.VarChar(100)
+  password       String         @db.VarChar(255)
+  no_hp_karyawan String         @db.Char(15)
+  role           karyawan_role? @default(Resepsionis)
+  reservasi      reservasi[]
+}
+
+model reservasi {
+  id_reservasi      Int                         @id @default(autoincrement())
+  id_tamu           Int
+  id_kamar          Int
+  id_karyawan       Int
+  tgl_reservasi     DateTime                    @db.Date
+  check_in          DateTime                    @db.Date
+  check_out         DateTime                    @db.Date
+  total_bayar       Decimal                     @db.Decimal(10, 2)
+  metode_pembayaran reservasi_metode_pembayaran
+  status            reservasi_status?           @default(Pending)
+  tamu              tamu                        @relation(fields: [id_tamu], references: [id_tamu], onDelete: NoAction, onUpdate: NoAction, map: "reservasi_ibfk_1")
+  kamar             kamar                       @relation(fields: [id_kamar], references: [id_kamar], onDelete: NoAction, onUpdate: NoAction, map: "reservasi_ibfk_2")
+  karyawan          karyawan                    @relation(fields: [id_karyawan], references: [id_karyawan], onDelete: NoAction, onUpdate: NoAction, map: "reservasi_ibfk_3")
+
+  @@index([id_kamar], map: "id_kamar")
+  @@index([id_karyawan], map: "id_karyawan")
+  @@index([id_tamu], map: "id_tamu")
+}
+
+model tamu {
+  id_tamu   Int         @id @default(autoincrement())
+  nama      String      @db.VarChar(100)
+  no_hp     String      @db.Char(15)
+  alamat    String      @db.VarChar(100)
+  reservasi reservasi[]
+}
+
+model tipe_kamar {
+  id_tipe_kamar Int     @id @default(autoincrement())
+  nama_tipe     String  @db.VarChar(50)
+  harga         Decimal @db.Decimal(10, 2)
+  fasilitas     String  @db.Text
+  kamar         kamar[]
+}
+
+enum kamar_status {
+  Tersedia
+  Terisi
+  Dipesan
+  Pembersihan
+}
+
+enum karyawan_role {
+  Admin
+  Resepsionis
+}
+
+enum reservasi_metode_pembayaran {
+  Cash
+  Transfer
+  Debit
+  Kredit
+}
+
+enum reservasi_status {
+  Pending
+  Dikonfirmasi
+  Check_In     @map("Check-In")
+  Check_Out    @map("Check-Out")
+  Dibatalkan
+}

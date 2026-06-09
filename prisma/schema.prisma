@@ -1,95 +1,93 @@
-
 generator client {
   provider = "prisma-client-js"
+  output   = "./generated/client"
 }
 
 datasource db {
-  provider = "mysql" 
+  provider = "mysql"
 }
 
-// ENUMERATIONS
-enum RoleKaryawan {
-  Admin
-  Resepsionis
+model kamar {
+  id_kamar      Int           @id @default(autoincrement())
+  id_tipe_kamar Int
+  nomor_kamar   String        @db.VarChar(10)
+  status        kamar_status? @default(Tersedia)
+  tipe_kamar    tipe_kamar    @relation(fields: [id_tipe_kamar], references: [id_tipe_kamar], onDelete: NoAction, onUpdate: NoAction, map: "kamar_ibfk_1")
+  reservasi     reservasi[]
+
+  @@index([id_tipe_kamar], map: "id_tipe_kamar")
 }
 
-enum StatusKamar {
+model karyawan {
+  id_karyawan    Int            @id @default(autoincrement())
+  nama_karyawan  String         @db.VarChar(100)
+  username       String         @unique(map: "username") @db.VarChar(50)
+  email          String         @db.VarChar(100)
+  password       String         @db.VarChar(255)
+  no_hp_karyawan String         @db.Char(15)
+  role           karyawan_role? @default(Resepsionis)
+  reservasi      reservasi[]
+}
+
+model reservasi {
+  id_reservasi      Int                         @id @default(autoincrement())
+  id_tamu           Int
+  id_kamar          Int
+  id_karyawan       Int
+  tgl_reservasi     DateTime                    @db.Date
+  check_in          DateTime                    @db.Date
+  check_out         DateTime                    @db.Date
+  total_bayar       Decimal                     @db.Decimal(10, 2)
+  metode_pembayaran reservasi_metode_pembayaran
+  status            reservasi_status?           @default(Pending)
+  tamu              tamu                        @relation(fields: [id_tamu], references: [id_tamu], onDelete: NoAction, onUpdate: NoAction, map: "reservasi_ibfk_1")
+  kamar             kamar                       @relation(fields: [id_kamar], references: [id_kamar], onDelete: NoAction, onUpdate: NoAction, map: "reservasi_ibfk_2")
+  karyawan          karyawan                    @relation(fields: [id_karyawan], references: [id_karyawan], onDelete: NoAction, onUpdate: NoAction, map: "reservasi_ibfk_3")
+
+  @@index([id_kamar], map: "id_kamar")
+  @@index([id_karyawan], map: "id_karyawan")
+  @@index([id_tamu], map: "id_tamu")
+}
+
+model tamu {
+  id_tamu   Int         @id @default(autoincrement())
+  nama      String      @db.VarChar(100)
+  no_hp     String      @db.Char(15)
+  alamat    String      @db.VarChar(100)
+  reservasi reservasi[]
+}
+
+model tipe_kamar {
+  id_tipe_kamar Int     @id @default(autoincrement())
+  nama_tipe     String  @db.VarChar(50)
+  harga         Decimal @db.Decimal(10, 2)
+  fasilitas     String  @db.Text
+  kamar         kamar[]
+}
+
+enum kamar_status {
   Tersedia
   Terisi
   Dipesan
   Pembersihan
 }
 
-enum MetodePembayaran {
-  Belum_Bayar @map("Belum Bayar")
+enum karyawan_role {
+  Admin
+  Resepsionis
+}
+
+enum reservasi_metode_pembayaran {
   Cash
   Transfer
   Debit
   Kredit
 }
 
-enum StatusReservasi {
+enum reservasi_status {
   Pending
   Dikonfirmasi
-  Check_In  @map("Check-In")
-  Check_Out @map("Check-Out")
+  Check_In     @map("Check-In")
+  Check_Out    @map("Check-Out")
   Dibatalkan
-}
-
-// MODELS
-model Karyawan {
-  id_karyawan    String       @id @db.VarChar(20)
-  nama_karyawan  String       @db.VarChar(100)
-  username       String       @unique @db.VarChar(50)
-  email          String       @db.VarChar(30)
-  password       String       @db.VarChar(255)
-  no_hp_karyawan String       @db.Char(15)
-  role           RoleKaryawan @default(Resepsionis)
-  
-  reservasi      Reservasi[]  
-}
-
-model Tamu {
-  id_tamu   String      @id @db.VarChar(20)
-  nama      String      @db.VarChar(100)
-  no_hp     String      @db.Char(15)
-  alamat    String      @db.VarChar(100)
-  
-  reservasi Reservasi[] 
-}
-
-model Tipe_Kamar {
-  id_tipe_kamar String  @id @db.VarChar(20)
-  nama_tipe     String  @db.VarChar(50)
-  harga         Decimal @db.Decimal(10, 2)
-  fasilitas     String  @db.Text
-  
-  kamar         Kamar[] 
-}
-
-model Kamar {
-  id_kamar      String      @id @db.VarChar(20)
-  id_tipe_kamar String?     @db.VarChar(20)
-  nomor_kamar   String      @db.VarChar(10)
-  status        StatusKamar @default(Tersedia)
-
-  tipe_kamar    Tipe_Kamar? @relation(fields: [id_tipe_kamar], references: [id_tipe_kamar])
-  reservasi     Reservasi[] 
-}
-
-model Reservasi {
-  id_reservasi      String           @id @db.VarChar(20)
-  id_tamu           String?          @db.VarChar(20)
-  id_kamar          String?          @db.VarChar(20)
-  id_karyawan       String?          @db.VarChar(20)
-  tgl_reservasi     String           @db.Char(20)
-  check_in          DateTime         @db.Date
-  check_out         DateTime         @db.Date
-  total_bayar       Decimal          @db.Decimal(10, 2)
-  metode_pembayaran MetodePembayaran @default(Belum_Bayar)
-  status            StatusReservasi  @default(Pending)
-
-  tamu              Tamu?            @relation(fields: [id_tamu], references: [id_tamu])
-  kamar             Kamar?           @relation(fields: [id_kamar], references: [id_kamar])
-  karyawan          Karyawan?        @relation(fields: [id_karyawan], references: [id_karyawan])
 }

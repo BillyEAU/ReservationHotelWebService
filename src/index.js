@@ -3,7 +3,6 @@ import dotenv from 'dotenv';
 import routes from './routes/api.js'; // Pastikan Anda mengimpor file routes Anda
 
 dotenv.config();
-
 const app = express();
 const port = process.env.PORT || 2024;
 

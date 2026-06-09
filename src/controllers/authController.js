@@ -10,13 +10,13 @@ const authController = {
       // 1. Ambil username (bukan email) dan password sesuai skema login kamu
       const { username, password } = req.body;
       if (!username || !password) {
-        return res.status(400).json({ status: false, error: "Username dan password wajib diisi" });
-      }
-
-      // 2. Cari karyawan berdasarkan username via model
-      const user = await karyawanModel.getByUsername(username);
-      
-      // Jika user tidak ditemukan
+          return res.status(400).json({ status: false, error: "Username dan password wajib diisi" });
+        }
+        
+        // 2. Cari karyawan berdasarkan username via model
+        const user = await karyawanModel.getByUsername(username);
+        // Jika user tidak ditemukan
+        console.log(user);
       if (!user) {
         return res.status(404).json({ status: false, error: "Username Karyawan tidak ditemukan" });
       }
@@ -24,7 +24,7 @@ const authController = {
       // 3. Validasi Password
       const validPassword = await bcrypt.compare(password, user.password);
       if (!validPassword) {
-        return res.status(401).json({ status: false, error: "Password Salah" });
+        return res.status(401).json({ status: false, error: `Password Salah ${user.password}` });
       }
 
       // 4. Generate Token dengan data payload yang sesuai dengan SKEMA DB & MIDDLEWARE
