@@ -16,7 +16,7 @@ const karyawanModel = {
     });
   },
 
-  
+
   async getById(id_karyawan) {
     return await prismaClient.karyawan.findUnique({
       where: { id_karyawan: Number(id_karyawan) },
@@ -33,12 +33,14 @@ const karyawanModel = {
 
 
   async getByUsername(username) {
+    // console.log("prismaClient =", prismaClient);
+    // console.log("prismaClient.karyawan =", prismaClient?.karyawan);
     return await prismaClient.karyawan.findUnique({
       where: { username },
     });
   },
 
-  
+
   async getByEmail(email) {
     return await prismaClient.karyawan.findFirst({
       where: { email },
@@ -66,7 +68,7 @@ const karyawanModel = {
     });
   },
 
-  
+
   async update(id_karyawan, { nama_karyawan, username, email, password, no_hp_karyawan, role }) {
     return await prismaClient.karyawan.update({
       where: { id_karyawan: Number(id_karyawan) },
@@ -89,7 +91,7 @@ const karyawanModel = {
     });
   },
 
-  
+
   async delete(id_karyawan) {
     return await prismaClient.karyawan.delete({
       where: { id_karyawan: Number(id_karyawan) },
