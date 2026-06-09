@@ -24,7 +24,7 @@ const authController = {
       // 3. Validasi Password
       const validPassword = await bcrypt.compare(password, user.password);
       if (!validPassword) {
-        return res.status(401).json({ status: false, error: `Password Salah ${user.password}` });
+        return res.status(401).json({ status: false, error: "Password Salah" });
       }
 
       // 4. Generate Token dengan data payload yang sesuai dengan SKEMA DB & MIDDLEWARE

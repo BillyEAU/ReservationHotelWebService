@@ -11,6 +11,7 @@ import kamarController from '../controllers/kamarController.js';
 // const kamarController = require('../controllers/kamarController.js');
 import reservasiController from '../controllers/reservasiController.js'; 
 import karyawanController from '../controllers/karyawanController.js';
+import tipeController from '../controllers/tipeController.js';
 // const reservasiController = require('../controllers/reservasiController.js');
 
 
@@ -46,11 +47,11 @@ router.delete('/tamu/:id', verifyToken, isAdmin, tamuController.destroy); // Han
 // 3. ROUTING TIPE KAMAR & KAMAR
 // ==========================================
 // Tipe Kamar
-router.get('/tipe-kamar', verifyToken, kamarController.getAll);
-router.get('/tipe-kamar/:id', verifyToken, kamarController.getById);
-router.post('/tipe-kamar', verifyToken, isAdmin, kamarController.create); // Hanya Admin
-router.put('/tipe-kamar/:id', verifyToken, isAdmin, kamarController.update); // Hanya Admin
-router.delete('/tipe-kamar/:id', verifyToken, isAdmin, kamarController.destroy); // Hanya Admin
+router.get('/tipe-kamar', verifyToken, tipeController.getAll);
+router.get('/tipe-kamar/:id', verifyToken, tipeController.getById);
+router.post('/tipe-kamar', verifyToken, isAdmin, tipeController.create); // Hanya Admin
+router.put('/tipe-kamar/:id', verifyToken, isAdmin, tipeController.update); // Hanya Admin
+router.delete('/tipe-kamar/:id', verifyToken, isAdmin, tipeController.destroy); // Hanya Admin
 
 // Kamar
 

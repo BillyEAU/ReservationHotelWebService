@@ -1,6 +1,7 @@
 import karyawanModel from "../models/karyawanModel.js";
 import validator from "../validators/validator.js";
 import { karyawanValidationSchema } from "../validators/karyawanValidator.js";
+import bcrypt from "bcrypt";
 
 const getAll = async (req, res, next) => {
   try {
@@ -69,6 +70,9 @@ const create = async (req, res, next) => {
 
     if (error)
       return res.status(400).json({ error: error });
+    const hashedPassword = await bcrypt.hash(value.password, 10);
+
+    value.password = hashedPassword;
 
     const newKaryawan = await karyawanModel.create(value);
 
@@ -113,8 +117,10 @@ const update = async (req, res, next) => {
 
     if (error)
       return res.status(400).json({ error: error });
-
-    const updatedKaryawan = await karyawanModel.update(value, id);
+    if (value.password) {
+      value.password = await bcrypt.hash(value.password, 10);
+    }
+    const updatedKaryawan = await karyawanModel.update(id, value);
 
     return res.status(200).json({
       status: true,

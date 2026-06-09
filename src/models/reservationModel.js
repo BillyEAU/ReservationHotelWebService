@@ -1,6 +1,6 @@
 import { prismaClient } from "../database/dbConfig.js";
 
-const reservasiModel = {
+const reservationModel = {
   
   async getAll() {
     return await prismaClient.reservasi.findMany({
@@ -156,4 +156,4 @@ const reservasiModel = {
   },
 };
 
-export default reservasiModel;
+export default reservationModel;

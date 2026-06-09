@@ -1,3 +1,4 @@
+import { prismaClient } from "../database/dbConfig.js";
 import kamarModel from "../models/kamarModel.js";
 import validator from "../validators/validator.js";
 import { kamarValidationSchema } from "../validators/kamarValidator.js";
@@ -131,7 +132,7 @@ const update = async (req, res, next) => {
     if (error)
       return res.status(400).json({ error: error });
 
-    const updatedKamar = await kamarModel.update(value, id);
+    const updatedKamar = await kamarModel.update(id, value);
 
     return res.status(200).json({
       status: true,

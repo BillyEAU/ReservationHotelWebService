@@ -33,8 +33,6 @@ const karyawanModel = {
 
 
   async getByUsername(username) {
-    // console.log("prismaClient =", prismaClient);
-    // console.log("prismaClient.karyawan =", prismaClient?.karyawan);
     return await prismaClient.karyawan.findUnique({
       where: { username },
     });
