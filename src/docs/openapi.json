@@ -11,10 +11,29 @@
       "description": "Local Server"
     }
   ],
+  "tags": [
+    {
+      "name": "API Auth",
+      "description": "Endpoint Autentikasi dan Login Karyawan"
+    },
+    {
+      "name": "API Kamar",
+      "description": "Endpoint Data Kamar"
+    },
+    {
+      "name": "API Tipe Kamar",
+      "description": "Endpoint Data Tipe Kamar"
+    },
+    {
+      "name": "API Reservasi",
+      "description": "Endpoint Data Reservasi Hotel"
+    }
+  ],
   "paths": {
     "/auth/login": {
       "post": {
-        "summary": "Autentikasi Karyawan / Login",
+        "tags": ["API Auth"],
+        "summary": "Autentikasi Login Karyawan",
         "description": "Mengirimkan username dan password untuk mendapatkan token akses JWT.",
         "requestBody": {
           "required": true,
@@ -24,15 +43,8 @@
                 "type": "object",
                 "required": ["username", "password"],
                 "properties": {
-                  "username": {
-                    "type": "string",
-                    "example": "admin_hotel"
-                  },
-                  "password": {
-                    "type": "string",
-                    "format": "password",
-                    "example": "password123"
-                  }
+                  "username": { "type": "string", "example": "resepsionis1" },
+                  "password": { "type": "string", "format": "password", "example": "password123" }
                 }
               }
             }
@@ -40,20 +52,20 @@
         },
         "responses": {
           "200": {
-            "description": "Login Berhasil",
+            "description": "Login Berhasil!",
             "content": {
               "application/json": {
                 "schema": {
                   "type": "object",
                   "properties": {
                     "status": { "type": "boolean", "example": true },
-                    "message": { "type": "string", "example": "Login Berhasil" },
+                    "message": { "type": "string", "example": "Login Berhasil!" },
                     "data": {
                       "type": "object",
                       "properties": {
                         "id_karyawan": { "type": "integer", "example": 1 },
-                        "nama_karyawan": { "type": "string", "example": "Raditya Arya" },
-                        "username": { "type": "string", "example": "admin_hotel" },
+                        "nama_karyawan": { "type": "string", "example": "Raditya Arya Wiguna" },
+                        "username": { "type": "string", "example": "radit" },
                         "role": { "type": "string", "example": "Admin" },
                         "token": { "type": "string", "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..." }
                       }
@@ -92,14 +104,14 @@
             }
           },
           "404": {
-            "description": "Username Karyawan tidak ditemukan",
+            "description": "Data Karyawan tidak ditemukan",
             "content": {
               "application/json": {
                 "schema": {
                   "type": "object",
                   "properties": {
                     "status": { "type": "boolean", "example": false },
-                    "error": { "type": "string", "example": "Username Karyawan tidak ditemukan" }
+                    "error": { "type": "string", "example": "Data Karyawan tidak ditemukan" }
                   }
                 }
               }
@@ -111,13 +123,10 @@
     },
     "/kamar": {
       "get": {
+        "tags": ["API Kamar"],
         "summary": "Mengambil semua data kamar",
         "description": "Menampilkan list semua kamar hotel beserta detail id_tipe_kamar.",
-        "security": [
-          {
-            "bearerAuth": []
-          }
-        ],
+        "security": [{ "bearerAuth": [] }],
         "responses": {
           "200": {
             "description": "Data Berhasil Ditemukan",
@@ -130,9 +139,7 @@
                     "message": { "type": "string", "example": "Data Berhasil Ditemukan" },
                     "data": {
                       "type": "array",
-                      "items": {
-                        "$ref": "#/components/schemas/KamarResponse"
-                      }
+                      "items": { "$ref": "#/components/schemas/KamarResponse" }
                     }
                   }
                 }
@@ -144,20 +151,15 @@
         }
       },
       "post": {
-        "summary": "Menambahkan kamar baru",
+        "tags": ["API Kamar"],
+        "summary": "Menambahkan data kamar baru",
         "description": "Membuat record kamar baru ke dalam database. Status default jika tidak diisi adalah 'Tersedia'.",
-        "security": [
-          {
-            "bearerAuth": []
-          }
-        ],
+        "security": [{ "bearerAuth": [] }],
         "requestBody": {
           "required": true,
           "content": {
             "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/KamarInput"
-              }
+              "schema": { "$ref": "#/components/schemas/KamarInput" }
             }
           }
         },
@@ -184,18 +186,15 @@
     },
     "/kamar/{id}": {
       "get": {
-        "summary": "Mengambil data kamar berdasarkan ID",
-        "security": [
-          {
-            "bearerAuth": []
-          }
-        ],
+        "tags": ["API Kamar"],
+        "summary": "Menampilkan data kamar berdasarkan ID Kamar",
+        "security": [{ "bearerAuth": [] }],
         "parameters": [
           {
             "name": "id",
             "in": "path",
             "required": true,
-            "description": "ID dari kamar yang ingin dicari",
+            "description": "Masukkan ID dari kamar yang ingin anda dicari :",
             "schema": { "type": "integer", "example": 1 }
           }
         ],
@@ -221,18 +220,15 @@
         }
       },
       "put": {
-        "summary": "Mengupdate data kamar berdasarkan ID",
-        "security": [
-          {
-            "bearerAuth": []
-          }
-        ],
+        "tags": ["API Kamar"],
+        "summary": "Mengupdate data kamar berdasarkan ID Kamar",
+        "security": [{ "bearerAuth": [] }],
         "parameters": [
           {
             "name": "id",
             "in": "path",
             "required": true,
-            "description": "ID dari kamar yang ingin diubah",
+            "description": "Masukkan ID dari kamar yang ingin diubah :",
             "schema": { "type": "integer", "example": 1 }
           }
         ],
@@ -240,9 +236,7 @@
           "required": true,
           "content": {
             "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/KamarInput"
-              }
+              "schema": { "$ref": "#/components/schemas/KamarInput" }
             }
           }
         },
@@ -268,18 +262,15 @@
         }
       },
       "delete": {
+        "tags": ["API Kamar"],
         "summary": "Menghapus data kamar berdasarkan ID",
-        "security": [
-          {
-            "bearerAuth": []
-          }
-        ],
+        "security": [{ "bearerAuth": [] }],
         "parameters": [
           {
             "name": "id",
             "in": "path",
             "required": true,
-            "description": "ID dari kamar yang ingin dihapus",
+            "description": "Masukkan ID dari kamar yang ingin dihapus :",
             "schema": { "type": "integer", "example": 1 }
           }
         ],
@@ -297,7 +288,7 @@
                       "type": "object",
                       "properties": {
                         "id_kamar": { "type": "integer", "example": 1 },
-                        "nomor_kamar": { "type": "string", "example": "A-101" }
+                        "nomor_kamar": { "type": "string", "example": "12" }
                       }
                     }
                   }
@@ -313,13 +304,10 @@
     },
     "/kamar/status/{status}": {
       "get": {
-        "summary": "Mendapatkan kamar berdasarkan status",
-        "description": "Mencari list kamar berdasarkan parameter status ('Tersedia', 'Terisi', 'Dipesan', 'Pembersihan')",
-        "security": [
-          {
-            "bearerAuth": []
-          }
-        ],
+        "tags": ["API Kamar"],
+        "summary": "Mengecek ketersediaan kamar berdasarkan status",
+        "description": "Mencari list kamar berdasarkan parameter status (Tersedia, Terisi, Dipesan, dan Pembersihan)",
+        "security": [{ "bearerAuth": [] }],
         "parameters": [
           {
             "name": "status",
@@ -335,7 +323,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Berhasil mengambil data berdasarkan status",
+            "description": "Berhasil mengambil data kamar berdasarkan status",
             "content": {
               "application/json": {
                 "schema": {
@@ -349,7 +337,7 @@
                         "properties": {
                           "id_kamar": { "type": "integer", "example": 1 },
                           "id_tipe_kamar": { "type": "integer", "example": 2 },
-                          "nomor_kamar": { "type": "string", "example": "A-101" },
+                          "nomor_kamar": { "type": "string", "example": "12" },
                           "status": { "type": "string", "example": "Tersedia" }
                         }
                       }
@@ -362,6 +350,369 @@
           "500": { "$ref": "#/components/responses/500InternalError" }
         }
       }
+    },
+    "/tipe-kamar": {
+      "get": {
+        "tags": ["API Tipe Kamar"],
+        "summary": "Mengambil semua data tipe kamar",
+        "description": "Menampilkan seluruh list tipe kamar hotel beserta harga dan fasilitasnya.",
+        "security": [{ "bearerAuth": [] }],
+        "responses": {
+          "200": {
+            "description": "Data Berhasil Ditemukan",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": { "type": "boolean", "example": true },
+                    "message": { "type": "string", "example": "Data Berhasil Ditemukan" },
+                    "data": {
+                      "type": "array",
+                      "items": { "$ref": "#/components/schemas/TipeKamarResponse" }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": { "$ref": "#/components/responses/404NotFound" },
+          "500": { "$ref": "#/components/responses/500InternalError" }
+        }
+      },
+      "post": {
+        "tags": ["API Tipe Kamar"],
+        "summary": "Menambahkan tipe kamar baru",
+        "description": "Membuat tipe kamar baru seperti nama tipe, harga, dan fasilitas ke database.",
+        "security": [{ "bearerAuth": [] }],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/TipeKamarInput" }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Data Berhasil Ditambahkan",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": { "type": "boolean", "example": true },
+                    "message": { "type": "string", "example": "Data Berhasil Ditambahkan" },
+                    "data": { "$ref": "#/components/schemas/TipeKamarResponse" }
+                  }
+                }
+              }
+            }
+          },
+          "400": { "$ref": "#/components/responses/400BadRequest" },
+          "500": { "$ref": "#/components/responses/500InternalError" }
+        }
+      }
+    },
+    "/tipe-kamar/{id}": {
+      "get": {
+        "tags": ["API Tipe Kamar"],
+        "summary": "Mengambil data tipe kamar berdasarkan ID",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "Masukkan ID dari tipe kamar yang dicari :",
+            "schema": { "type": "integer", "example": 1 }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Data Berhasil Ditemukan",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": { "type": "boolean", "example": true },
+                    "message": { "type": "string", "example": "Data Berhasil Ditemukan" },
+                    "data": { "$ref": "#/components/schemas/TipeKamarResponse" }
+                  }
+                }
+              }
+            }
+          },
+          "400": { "$ref": "#/components/responses/400BadRequest" },
+          "404": { "$ref": "#/components/responses/404NotFound" },
+          "500": { "$ref": "#/components/responses/500InternalError" }
+        }
+      },
+      "put": {
+        "tags": ["API Tipe Kamar"],
+        "summary": "Mengupdate data tipe kamar berdasarkan ID",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "Masukkan ID dari tipe kamar yang ingin diubah :",
+            "schema": { "type": "integer", "example": 1 }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/TipeKamarInput" }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Data Berhasil Diupdate",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": { "type": "boolean", "example": true },
+                    "message": { "type": "string", "example": "Data Berhasil Diupdate" },
+                    "data": { "$ref": "#/components/schemas/TipeKamarResponse" }
+                  }
+                }
+              }
+            }
+          },
+          "400": { "$ref": "#/components/responses/400BadRequest" },
+          "404": { "$ref": "#/components/responses/404NotFound" },
+          "500": { "$ref": "#/components/responses/500InternalError" }
+        }
+      },
+      "delete": {
+        "tags": ["API Tipe Kamar"],
+        "summary": "Menghapus data tipe kamar berdasarkan ID",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "Masukkan ID dari tipe kamar yang ingin dihapus :",
+            "schema": { "type": "integer", "example": 1 }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Data Tipe Kamar Berhasil Dihapus",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": { "type": "boolean", "example": true },
+                    "message": { "type": "string", "example": "Data Tipe Kamar Berhasil Dihapus" },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "id_tipe_kamar": { "type": "integer", "example": 1 },
+                        "nama_tipe": { "type": "string", "example": "Deluxe Room" }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": { "$ref": "#/components/responses/400BadRequest" },
+          "404": { "$ref": "#/components/responses/404NotFound" },
+          "500": { "$ref": "#/components/responses/500InternalError" }
+        }
+      }
+    },
+    "/reservasi": {
+      "get": {
+        "tags": ["API Reservasi"],
+        "summary": "Mengambil semua data reservasi hotel",
+        "description": "Menampilkan seluruh list transaksi reservasi hotel.",
+        "security": [{ "bearerAuth": [] }],
+        "responses": {
+          "200": {
+            "description": "Data Berhasil Ditemukan",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": { "type": "boolean", "example": true },
+                    "message": { "type": "string", "example": "Data Berhasil Ditemukan" },
+                    "data": {
+                      "type": "array",
+                      "items": { "$ref": "#/components/schemas/ReservasiResponse" }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": { "$ref": "#/components/responses/404NotFound" },
+          "500": { "$ref": "#/components/responses/500InternalError" }
+        }
+      },
+      "post": {
+        "tags": ["API Reservasi"],
+        "summary": "Menambahkan data reservasi baru",
+        "description": "Membuat record transaksi reservasi kamar hotel baru.",
+        "security": [{ "bearerAuth": [] }],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/ReservasiInput" }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Data Reservasi Berhasil Ditambahkan",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": { "type": "boolean", "example": true },
+                    "message": { "type": "string", "example": "Data Reservasi Berhasil Ditambahkan" },
+                    "data": { "$ref": "#/components/schemas/ReservasiResponse" }
+                  }
+                }
+              }
+            }
+          },
+          "400": { "$ref": "#/components/responses/400BadRequest" },
+          "500": { "$ref": "#/components/responses/500InternalError" }
+        }
+      }
+    },
+    "/reservasi/{id}": {
+      "get": {
+        "tags": ["API Reservasi"],
+        "summary": "Mengambil data reservasi berdasarkan ID",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "Masukkan ID dari data reservasi yang dicari :",
+            "schema": { "type": "integer", "example": 1 }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Data Berhasil Ditemukan",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": { "type": "boolean", "example": true },
+                    "message": { "type": "string", "example": "Data Berhasil Ditemukan" },
+                    "data": { "$ref": "#/components/schemas/ReservasiResponse" }
+                  }
+                }
+              }
+            }
+          },
+          "400": { "$ref": "#/components/responses/400BadRequest" },
+          "404": { "$ref": "#/components/responses/404NotFound" },
+          "500": { "$ref": "#/components/responses/500InternalError" }
+        }
+      },
+      "put": {
+        "tags": ["API Reservasi"],
+        "summary": "Mengupdate data reservasi berdasarkan ID",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "Masukkan ID dari data reservasi yang ingin diubah :",
+            "schema": { "type": "integer", "example": 1 }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/ReservasiInput" }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Data Reservasi Berhasil Diupdate",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": { "type": "boolean", "example": true },
+                    "message": { "type": "string", "example": "Data Reservasi Berhasil Diupdate" },
+                    "data": { "$ref": "#/components/schemas/ReservasiResponse" }
+                  }
+                }
+              }
+            }
+          },
+          "400": { "$ref": "#/components/responses/400BadRequest" },
+          "404": { "$ref": "#/components/responses/404NotFound" },
+          "500": { "$ref": "#/components/responses/500InternalError" }
+        }
+      },
+      "delete": {
+        "tags": ["API Reservasi"],
+        "summary": "Menghapus data reservasi berdasarkan ID",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "Masukkan ID dari reservasi yang ingin dihapus :",
+            "schema": { "type": "integer", "example": 1 }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Data Reservasi Berhasil Dihapus",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": { "type": "boolean", "example": true },
+                    "message": { "type": "string", "example": "Data Reservasi Berhasil Dihapus" },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "id_reservasi": { "type": "integer", "example": 1 },
+                        "id_tamu": { "type": "integer", "example": 10 },
+                        "id_kamar": { "type": "integer", "example": 2 }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": { "$ref": "#/components/responses/400BadRequest" },
+          "404": { "$ref": "#/components/responses/404NotFound" },
+          "500": { "$ref": "#/components/responses/500InternalError" }
+        }
+      }
     }
   },
   "components": {
@@ -370,7 +721,7 @@
         "type": "http",
         "scheme": "bearer",
         "bearerFormat": "JWT",
-        "description": "Masukkan token JWT kamu langsung ke dalam input tanpa kata 'Bearer'."
+        "description": "Setelah melakukan login, tambahkan token JWT (tanpa Bearer) yang telah didapatkan ke dalam kolom 'VALUE' yang telah disediakan!."
       }
     },
     "schemas": {
@@ -379,7 +730,7 @@
         "properties": {
           "id_kamar": { "type": "integer", "example": 1 },
           "id_tipe_kamar": { "type": "integer", "example": 2 },
-          "nomor_kamar": { "type": "string", "example": "A-101" },
+          "nomor_kamar": { "type": "string", "example": "12" },
           "status": { "type": "string", "example": "Tersedia" }
         }
       },
@@ -387,23 +738,57 @@
         "type": "object",
         "required": ["id_tipe_kamar", "nomor_kamar"],
         "properties": {
-          "id_tipe_kamar": {
-            "type": "integer",
-            "description": "ID Tipe Kamar (Harus angka positif)",
-            "example": 2
-          },
-          "nomor_kamar": {
-            "type": "string",
-            "maxLength": 10,
-            "description": "Nomor atau nama unik kamar",
-            "example": "A-101"
-          },
-          "status": {
-            "type": "string",
-            "enum": ["Tersedia", "Terisi", "Dipesan", "Pembersihan"],
-            "default": "Tersedia",
-            "example": "Tersedia"
-          }
+          "id_tipe_kamar": { "type": "integer", "description": "ID Tipe Kamar (Harus angka positif)", "example": 2 },
+          "nomor_kamar": { "type": "string", "maxLength": 10, "description": "Tambahkan nomor dalam bentuk angka", "example": "12" },
+          "status": { "type": "string", "enum": ["Tersedia", "Terisi", "Dipesan", "Pembersihan"], "default": "Tersedia", "example": "Tersedia" }
+        }
+      },
+      "TipeKamarResponse": {
+        "type": "object",
+        "properties": {
+          "id_tipe_kamar": { "type": "integer", "example": 1 },
+          "nama_tipe": { "type": "string", "example": "Deluxe Room" },
+          "harga": { "type": "number", "example": 750000 },
+          "fasilitas": { "type": "string", "example": "AC, TV, Wifi, Bathtub, Breakfast" }
+        }
+      },
+      "TipeKamarInput": {
+        "type": "object",
+        "required": ["nama_tipe", "harga"],
+        "properties": {
+          "nama_tipe": { "type": "string", "example": "Deluxe Room" },
+          "harga": { "type": "number", "example": 750000 },
+          "fasilitas": { "type": "string", "example": "AC, TV, Wifi, Bathtub, Breakfast" }
+        }
+      },
+      "ReservasiResponse": {
+        "type": "object",
+        "properties": {
+          "id_reservasi": { "type": "integer", "example": 1 },
+          "id_tamu": { "type": "integer", "example": 5 },
+          "id_kamar": { "type": "integer", "example": 2 },
+          "id_karyawan": { "type": "integer", "example": 1 },
+          "tgl_reservasi": { "type": "string", "format": "date-time", "example": "2026-06-09T07:00:00Z" },
+          "check_in": { "type": "string", "format": "date", "example": "2026-06-10" },
+          "check_out": { "type": "string", "format": "date", "example": "2026-06-12" },
+          "total_bayar": { "type": "number", "example": 1500000 },
+          "metode_pembayaran": { "type": "string", "example": "Transfer" },
+          "status": { "type": "string", "example": "Dikonfirmasi" }
+        }
+      },
+      "ReservasiInput": {
+        "type": "object",
+        "required": ["id_tamu", "id_kamar", "id_karyawan", "check_in", "check_out", "total_bayar", "metode_pembayaran"],
+        "properties": {
+          "id_tamu": { "type": "integer", "example": 5 },
+          "id_kamar": { "type": "integer", "example": 2 },
+          "id_karyawan": { "type": "integer", "example": 1 },
+          "tgl_reservasi": { "type": "string", "format": "date-time", "example": "2026-06-09T07:00:00Z" },
+          "check_in": { "type": "string", "format": "date", "example": "2026-06-10" },
+          "check_out": { "type": "string", "format": "date", "example": "2026-06-12" },
+          "total_bayar": { "type": "number", "example": 1500000 },
+          "metode_pembayaran": { "type": "string", "example": "Transfer" },
+          "status": { "type": "string", "example": "Dikonfirmasi" }
         }
       }
     },
@@ -415,7 +800,7 @@
             "schema": {
               "type": "object",
               "properties": {
-                "error": { "type": "string", "example": "Nomor kamar tidak boleh kosong" }
+                "error": { "type": "string", "example": "Format data yang dikirimkan salah / tidak sesuai ketentuan!" }
               }
             }
           }

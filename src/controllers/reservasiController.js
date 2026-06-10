@@ -1,3 +1,4 @@
+import { prismaClient } from "../database/dbConfig.js";
 import reservationModel from "../models/reservationModel.js";
 import validator from "../validators/validator.js";
 import { reservasiValidationSchema } from "../validators/reservasiValidator.js";
