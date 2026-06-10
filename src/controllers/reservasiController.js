@@ -157,7 +157,7 @@ const updateStatusReservasi = async (req, res) => {
 
     const reservasi = await prismaClient.reservasi.update({
       where: {
-        id: Number(id)
+        id_reservasi: Number(id)
       },
       data: {
         status
