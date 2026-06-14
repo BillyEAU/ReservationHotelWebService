@@ -17,6 +17,14 @@
       "description": "Endpoint Autentikasi dan Login Karyawan"
     },
     {
+      "name": "API Karyawan",
+      "description": "Endpoint Data Karyawan (Hanya Admin)"
+    },
+    {
+      "name": "API Tamu",
+      "description": "Endpoint Data Tamu Hotel"
+    },
+    {
       "name": "API Kamar",
       "description": "Endpoint Data Kamar"
     },
@@ -117,6 +125,351 @@
               }
             }
           },
+          "500": { "$ref": "#/components/responses/500InternalError" }
+        }
+      }
+    },
+    "/karyawan": {
+      "get": {
+        "tags": ["API Karyawan"],
+        "summary": "Mengambil semua data karyawan",
+        "description": "Menampilkan list semua karyawan hotel (Hanya Admin).",
+        "security": [{ "bearerAuth": [] }],
+        "responses": {
+          "200": {
+            "description": "Data Berhasil Ditemukan",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": { "type": "boolean", "example": true },
+                    "message": { "type": "string", "example": "Data Berhasil Ditemukan" },
+                    "data": {
+                      "type": "array",
+                      "items": { "$ref": "#/components/schemas/KaryawanResponse" }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": { "$ref": "#/components/responses/404NotFound" },
+          "500": { "$ref": "#/components/responses/500InternalError" }
+        }
+      },
+      "post": {
+        "tags": ["API Karyawan"],
+        "summary": "Menambahkan data karyawan baru",
+        "description": "Membuat record karyawan baru ke dalam database (Hanya Admin).",
+        "security": [{ "bearerAuth": [] }],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/KaryawanInput" }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Data Berhasil Ditambahkan",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": { "type": "boolean", "example": true },
+                    "message": { "type": "string", "example": "Data Berhasil Ditambahkan" },
+                    "data": { "$ref": "#/components/schemas/KaryawanResponse" }
+                  }
+                }
+              }
+            }
+          },
+          "400": { "$ref": "#/components/responses/400BadRequest" },
+          "500": { "$ref": "#/components/responses/500InternalError" }
+        }
+      }
+    },
+    "/karyawan/{id}": {
+      "get": {
+        "tags": ["API Karyawan"],
+        "summary": "Menampilkan data karyawan berdasarkan ID",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "Masukkan ID Karyawan :",
+            "schema": { "type": "integer", "example": 1 }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Data Berhasil Ditemukan",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": { "type": "boolean", "example": true },
+                    "message": { "type": "string", "example": "Data Berhasil Ditemukan" },
+                    "data": { "$ref": "#/components/schemas/KaryawanResponse" }
+                  }
+                }
+              }
+            }
+          },
+          "404": { "$ref": "#/components/responses/404NotFound" },
+          "500": { "$ref": "#/components/responses/500InternalError" }
+        }
+      },
+      "put": {
+        "tags": ["API Karyawan"],
+        "summary": "Mengupdate data karyawan",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "Masukkan ID Karyawan yang ingin diubah :",
+            "schema": { "type": "integer", "example": 1 }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/KaryawanInput" }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Data Berhasil Diupdate",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": { "type": "boolean", "example": true },
+                    "message": { "type": "string", "example": "Data Berhasil Diupdate" },
+                    "data": { "$ref": "#/components/schemas/KaryawanResponse" }
+                  }
+                }
+              }
+            }
+          },
+          "400": { "$ref": "#/components/responses/400BadRequest" },
+          "404": { "$ref": "#/components/responses/404NotFound" },
+          "500": { "$ref": "#/components/responses/500InternalError" }
+        }
+      },
+      "delete": {
+        "tags": ["API Karyawan"],
+        "summary": "Menghapus data karyawan berdasarkan ID",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "Masukkan ID Karyawan yang ingin dihapus :",
+            "schema": { "type": "integer", "example": 1 }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Data Karyawan Berhasil Dihapus",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": { "type": "boolean", "example": true },
+                    "message": { "type": "string", "example": "Data Karyawan Berhasil Dihapus" }
+                  }
+                }
+              }
+            }
+          },
+          "404": { "$ref": "#/components/responses/404NotFound" },
+          "500": { "$ref": "#/components/responses/500InternalError" }
+        }
+      }
+    },
+    "/tamu": {
+      "get": {
+        "tags": ["API Tamu"],
+        "summary": "Mengambil semua data tamu",
+        "description": "Menampilkan list semua tamu hotel.",
+        "security": [{ "bearerAuth": [] }],
+        "responses": {
+          "200": {
+            "description": "Data Berhasil Ditemukan",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": { "type": "boolean", "example": true },
+                    "message": { "type": "string", "example": "Data Berhasil Ditemukan" },
+                    "data": {
+                      "type": "array",
+                      "items": { "$ref": "#/components/schemas/TamuResponse" }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": { "$ref": "#/components/responses/404NotFound" },
+          "500": { "$ref": "#/components/responses/500InternalError" }
+        }
+      },
+      "post": {
+        "tags": ["API Tamu"],
+        "summary": "Menambahkan data tamu baru",
+        "description": "Membuat record tamu baru ke dalam database.",
+        "security": [{ "bearerAuth": [] }],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/TamuInput" }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Data Berhasil Ditambahkan",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": { "type": "boolean", "example": true },
+                    "message": { "type": "string", "example": "Data Berhasil Ditambahkan" },
+                    "data": { "$ref": "#/components/schemas/TamuResponse" }
+                  }
+                }
+              }
+            }
+          },
+          "400": { "$ref": "#/components/responses/400BadRequest" },
+          "500": { "$ref": "#/components/responses/500InternalError" }
+        }
+      }
+    },
+    "/tamu/{id}": {
+      "get": {
+        "tags": ["API Tamu"],
+        "summary": "Menampilkan data tamu berdasarkan ID",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "Masukkan ID Tamu :",
+            "schema": { "type": "integer", "example": 1 }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Data Berhasil Ditemukan",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": { "type": "boolean", "example": true },
+                    "message": { "type": "string", "example": "Data Berhasil Ditemukan" },
+                    "data": { "$ref": "#/components/schemas/TamuResponse" }
+                  }
+                }
+              }
+            }
+          },
+          "404": { "$ref": "#/components/responses/404NotFound" },
+          "500": { "$ref": "#/components/responses/500InternalError" }
+        }
+      },
+      "put": {
+        "tags": ["API Tamu"],
+        "summary": "Mengupdate data tamu",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "Masukkan ID Tamu yang ingin diubah :",
+            "schema": { "type": "integer", "example": 1 }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/TamuInput" }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Data Berhasil Diupdate",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": { "type": "boolean", "example": true },
+                    "message": { "type": "string", "example": "Data Berhasil Diupdate" },
+                    "data": { "$ref": "#/components/schemas/TamuResponse" }
+                  }
+                }
+              }
+            }
+          },
+          "400": { "$ref": "#/components/responses/400BadRequest" },
+          "404": { "$ref": "#/components/responses/404NotFound" },
+          "500": { "$ref": "#/components/responses/500InternalError" }
+        }
+      },
+      "delete": {
+        "tags": ["API Tamu"],
+        "summary": "Menghapus data tamu berdasarkan ID",
+        "description": "Menghapus record tamu dari database (Hanya Admin).",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "Masukkan ID Tamu yang ingin dihapus :",
+            "schema": { "type": "integer", "example": 1 }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Data Tamu Berhasil Dihapus",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": { "type": "boolean", "example": true },
+                    "message": { "type": "string", "example": "Data Tamu Berhasil Dihapus" }
+                  }
+                }
+              }
+            }
+          },
+          "404": { "$ref": "#/components/responses/404NotFound" },
           "500": { "$ref": "#/components/responses/500InternalError" }
         }
       }
@@ -713,6 +1066,73 @@
           "500": { "$ref": "#/components/responses/500InternalError" }
         }
       }
+    },
+    "/reservasi/{id}/status": {
+     "patch" : {
+        "tags": ["API Reservasi"],
+        "summary": "Mengupdate status pembayaran/reservasi hotel pengguna",
+        "description": "Mengubah status reservasi (Baru, Check-In, Check-Out, dan Batal).",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "Masukkan ID Reservasi :",
+            "schema": { "type": "integer", "example": 1 }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["status"],
+                "properties": {
+                  "status": { "type": "string", "example": "Check_In" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Status Berhasil Diupdate",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": { "type": "boolean", "example": true },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "id": { "type": "integer", "example": 1 },
+                        "status": { "type": "string", "example": "Check_In" }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": { "type": "boolean", "example": false },
+                    "message": { "type": "string", "example": "Error message details" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -725,6 +1145,47 @@
       }
     },
     "schemas": {
+      "KaryawanResponse": {
+        "type": "object",
+        "properties": {
+          "id_karyawan": { "type": "integer", "example": 1 },
+          "nama_karyawan": { "type": "string", "example": "Raditya Arya" },
+          "username": { "type": "string", "example": "radit_admin" },
+          "email": { "type": "string", "example": "radit@hotel.com" },
+          "no_hp_karyawan": { "type": "string", "example": "081234567890" },
+          "role": { "type": "string", "example": "Admin" }
+        }
+      },
+      "KaryawanInput": {
+        "type": "object",
+        "required": ["nama_karyawan", "username", "email", "password", "no_hp_karyawan"],
+        "properties": {
+          "nama_karyawan": { "type": "string", "maxLength": 100, "example": "Raditya Arya" },
+          "username": { "type": "string", "maxLength": 50, "example": "radit_admin" },
+          "email": { "type": "string", "maxLength": 100, "example": "radit@hotel.com" },
+          "password": { "type": "string", "format": "password", "example": "password123" },
+          "no_hp_karyawan": { "type": "string", "maxLength": 15, "example": "081234567890" },
+          "role": { "type": "string", "enum": ["Admin", "Resepsionis"], "default": "Resepsionis", "example": "Resepsionis" }
+        }
+      },
+      "TamuResponse": {
+        "type": "object",
+        "properties": {
+          "id_tamu": { "type": "integer", "example": 1 },
+          "nama": { "type": "string", "example": "Budi Santoso" },
+          "no_hp": { "type": "string", "example": "089876543210" },
+          "alamat": { "type": "string", "example": "Jl. Kemerdekaan No 45, Jakarta" }
+        }
+      },
+      "TamuInput": {
+        "type": "object",
+        "required": ["nama", "no_hp", "alamat"],
+        "properties": {
+          "nama": { "type": "string", "maxLength": 100, "example": "Budi Santoso" },
+          "no_hp": { "type": "string", "maxLength": 15, "example": "089876543210" },
+          "alamat": { "type": "string", "maxLength": 100, "example": "Jl. Kemerdekaan No 45, Jakarta" }
+        }
+      },
       "KamarResponse": {
         "type": "object",
         "properties": {
